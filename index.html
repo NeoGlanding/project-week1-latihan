@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    <input class="border-2" type="text" id="search_box">
+    <button id="search_button">Submit</button>
+
+    <div class="main">
+        <h1 class="text-center text-2xl font-bold">Now Playing</h1>
+        <div  id="main" class="now__playing flex flex-wrap justify-center gap-x-6">
+        </div>
+    </div>
+
+    <div class="main2">
+        <h1 class="text-center text-2xl font-bold">Upcoming</h1>
+        <div  id="upcoming" class="upcoming flex flex-wrap justify-center gap-x-6">
+        </div>
+    </div>
+
+    <div class="main3">
+        <div  id="search__result" class="search__result flex flex-wrap justify-center gap-x-6">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
