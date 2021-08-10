@@ -2,6 +2,7 @@
 
 function closeModal() {
     document.getElementsByClassName('modal__film')[0].classList.add('hidden');
+    document.getElementsByClassName('modal__film')[0].innerHTML = '';
 }
 function showModal(data) {
     const prod = data.production_companies;
