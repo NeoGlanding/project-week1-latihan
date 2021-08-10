@@ -99,12 +99,14 @@ async function nowPlaying() {
  nowPlaying();
 
 const renderInfo = (data) => {
-    const html = `<div onclick="specificMovie('${data.id}')" class="component m-4 hover:shadow-2xl hover:animate-ping">
+    const html = `<div class="w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
+        <div onclick="specificMovie('${data.id}')" class="component m-4">
             <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2${data.poster_path}" alt="">
             <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
             <p class="w-32">${data.vote_average === 0 ? 'Rating Not Found' : data.vote_average}</p>
             <p class="text-xs text-gray-400 w-32">${data.release_date}</p>
         </div>
+    </div>
     `
     return html;
 }
