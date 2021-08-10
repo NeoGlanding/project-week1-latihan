@@ -12,8 +12,8 @@ function showModal(data) {
     // console.log(genre)
     const html = `<div class="myModal">
             <div class="modal-content">
-                <div onclick="closeModal();" class="relative close__button mb-4 w-8 h-8 bg-red-300 rounded-full float-right hover:shadow-2xl">
-                    <p class="pos-cent text-white">X</p>
+                <div onclick="closeModal();" class="relative close__button mb-4 w-8 h-8 bg-red-300 rounded-full float-right hover:shadow-2xl hover:bg-red-900">
+                    <a href="#" class="pos-cent text-white font-bold">X</a>
                 </div>
                 <div class="info flex mt-4 flex-wrap justify-center gap-x-16">
                     <img class="w-96"src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${data.poster_path}" alt="">
@@ -88,7 +88,7 @@ const renderInfo = (data) => {
     const html = `<div onclick="specificMovie('${data.id}')" class="component m-4 hover:shadow-2xl hover:animate-ping">
             <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2${data.poster_path}" alt="">
             <h1 class="text-lg font-bold w-32">${data.title}</h1>
-            <p class="w-32">${data.vote_average === 0 ? 'Unrated' : data.vote_average}</p>
+            <p class="w-32">${data.vote_average === 0 ? 'Rating Not Found' : data.vote_average}</p>
             <p class="text-xs text-gray-300 w-32">${data.release_date}</p>
         </div>
     `
