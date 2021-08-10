@@ -16,7 +16,7 @@
     margin: 5% auto;
     padding: 20px;
     border: 1px solid black;
-    width: 50%;
+    width: 55%;
 }
 
 .pos-cent {
@@ -24,4 +24,10 @@
     top: 50%;
     right: 50%;
     transform: translate(50%, -50%);
+}
+
+.pos-cent-e{
+    position: absolute;
+    right: 50%;
+    transform: translate(50%);
 }
