@@ -1,5 +1,47 @@
 // API KEY 2eb8dae5e1988df3f72f80c01551e09a
 
+async function testGet(reg) {
+    try {
+        let data = await fetch(`https://restcountries.eu/rest/v2/alpha/${reg}`);
+        data = await data.json();
+        const {alpha2Code: code} = data;
+        document.getElementsByClassName('top__rated')[0].innerHTML = '';
+        getTopOnIndo(code);
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+function renderTopIndo(data, rank) {
+    const html = `<div class="relative w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
+        <div class="absolute right-0 bg-yellow-500 w-8 h-8 rounded-full text-white">
+            <p class="pos-cent font-bold text-xl">${rank}</p>
+        </div>
+        <div onclick="specificMovie('${data.id}')" class="text-left w-32 component mx-auto my-4">
+            <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2${data.poster_path}" alt="">
+            <p class="text-base bg-yellow-500 text-white text-center">Top Rated</p>
+            <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
+            <p class="w-32">${data.vote_average === 0 ? 'Unrated' : data.vote_average * 10 + "%"}</p>
+            <p class="text-xs text-gray-400 w-32">${data.release_date !== "" ? data.release_date : "Unknown Release Date" }</p>
+        </div>
+    </div>
+    `
+    return html;
+} 
+
+async function getTopOnIndo(reg) {
+    try {
+        let data = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=2eb8dae5e1988df3f72f80c01551e09a&language=en-US&page=1&region=${reg}`);
+        data = await data.json();
+        const result = data.results.filter((el, i) => i < 5);
+        result.forEach((el, i) => document.getElementsByClassName('top__rated')[0].insertAdjacentHTML('beforeend', renderTopIndo(el, i+1)))
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+getTopOnIndo('ID')
+
 function closeModal() {
     document.getElementsByClassName('modal__film')[0].classList.add('hidden');
     document.getElementsByClassName('modal__film')[0].innerHTML = '';
@@ -28,7 +70,7 @@ function showModal(data) {
                                 <p class="py-1 text-center">${data.vote_average > 0 ? data.vote_average * 10 + '%'  + ' Score': 'No Rating'}</p>
                             </div>
                             <div class="inline-block w-32 h-8 bg-indigo-500 text-white">
-                                <p class="py-1 text-center">${data.release_date}</p>
+                                <p class="py-1 text-center">${data.release_date !== "" ? data.release_date : "Unknown Release Date"}</p>
                             </div>
                         </div>
                         ${genre.length > 0 ? genre.map(el => {
@@ -55,8 +97,8 @@ function renderNowPlaying(data) {
             <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2${data.poster_path}" alt="">
             <p class="text-base bg-red-600 text-white text-center">Now Playing</p>
             <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
-            <p class="w-32">${data.vote_average === 0 ? 'Unrated' : data.vote_average}</p>
-            <p class="text-xs text-gray-400 w-32">${data.release_date}</p>
+            <p class="w-32">${data.vote_average === 0 ? 'Unrated' : data.vote_average * 10 + "%"}</p>
+            <p class="text-xs text-gray-400 w-32">${data.release_date !== "" ? data.release_date : "Unknown Release Date" }</p>
         </div>
     </div>
     `
@@ -69,8 +111,8 @@ function renderUpcoming(data) {
                 <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2${data.poster_path}" alt="">
                 <p class="text-base bg-blue-600 text-white text-center">Upcoming</p>
                 <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
-                <p class="w-32">${data.vote_average === 0 ? 'Unrated' : data.vote_average}</p>
-                <p class="text-xs text-gray-400 w-32">${data.release_date}</p>
+                <p class="w-32">${data.vote_average === 0 ? 'Unrated' : data.vote_average * 10 + "%"}</p>
+                <p class="text-xs text-gray-400 w-32">${data.release_date !== "" ? data.release_date : "Unknown Release Date"}</p>
             </div>
     </div>
     `
@@ -103,8 +145,8 @@ const renderInfo = (data) => {
         <div onclick="specificMovie('${data.id}')" class="component m-4">
             <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2${data.poster_path}" alt="">
             <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
-            <p class="w-32">${data.vote_average === 0 ? 'Rating Not Found' : data.vote_average}</p>
-            <p class="text-xs text-gray-400 w-32">${data.release_date}</p>
+            <p class="w-32">${data.vote_average === 0 ? 'Unrated' : data.vote_average * 10 + "%"}</p>
+            <p class="text-xs text-gray-400 w-32">${data.release_date !== "" ? data.release_date : "Unknown release date"}</p>
         </div>
     </div>
     `
@@ -157,3 +199,13 @@ document.getElementById('search_button').addEventListener('click', function() {
     searchMovies(data)
     document.getElementById('search_box').value = '';
 });
+
+document.getElementById('search__top').addEventListener('click', function() {
+    const data = document.getElementById("top__box").value;
+    if (data.length > 3) {
+        alert('Gunakan 3 Digit');
+        document.getElementById("top__box").value = '';
+        return 
+    }
+    testGet(data);
+})
