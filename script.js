@@ -153,7 +153,7 @@ async function nowPlaying() {
     document.getElementById('search__result').innerHTML = '';
      let data = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=2eb8dae5e1988df3f72f80c01551e09a&language=en-US&page=1&region=ID');
      data = await data.json();
-     let result = data.results;
+     let result = data.results.filter(el => el.poster_path !== null);
      result.forEach(el => document.getElementById('main').insertAdjacentHTML("beforeend", renderNowPlaying(el)))
  }
 
