@@ -1,73 +1,171 @@
 // API KEY 2eb8dae5e1988df3f72f80c01551e09a
 
-function renderPopular(data, rank) {
-    const html = `<div class="relative w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
-        <div class="absolute right-0 bg-indigo-500 w-8 h-8 rounded-full text-white">
-            <p class="pos-cent font-bold text-xl">${rank}</p>
-        </div>
-        <div onclick="specificMovie('${data.id}')" class="text-left w-32 component mx-auto my-4">
-            <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2${data.poster_path}" alt="">
-            <p class="text-base bg-indigo-500 text-white text-center">Popular</p>
-            <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
-            <p class="w-32">${data.vote_average === 0 ? 'Unrated' : data.vote_average * 10 + "%"}</p>
-            <p class="text-xs text-gray-400 w-32">${data.release_date !== "" ? data.release_date : "Unknown Release Date" }</p>
-        </div>
-    </div>
-    `
-    return html;
-}
-
-async function getPopular(reg) {
+// Fetching
+const getNowPlaying = async () => {
     try {
-        let data = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=2eb8dae5e1988df3f72f80c01551e09a&language=en-US&page=1&region=${reg}`);
+        let data = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=2eb8dae5e1988df3f72f80c01551e09a&language=en-US&page=1&region=ID');
         data = await data.json();
-        const result = data.results.filter((el, i) => i < 5);
-        result.forEach((el, i) => document.getElementById('popular').insertAdjacentHTML('beforeend', renderPopular(el, i+1)));
+        let {results} = data;
+        results = results.filter(el => el.poster_path !== null).slice(0,5);
+        results.forEach(el => document.getElementsByClassName('now_playing')[0].insertAdjacentHTML('afterbegin', renderNowPlaying(el)))
     } catch (error) {
         console.log(error)
     }
 }
 
-getPopular('ID');
+const getUpcoming = async () => {
+    try {
+        let data = await fetch('https://api.themoviedb.org/3/movie/upcoming?api_key=2eb8dae5e1988df3f72f80c01551e09a&language=en-US&page=1&region=ID');
+        data = await data.json();
+        let {results} = data;
+        results = results.filter(el => el.poster_path !== null).slice(0,5);
+        results.forEach(el => document.getElementsByClassName('upcoming')[0].insertAdjacentHTML('afterbegin', renderUpcoming(el)))
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-function renderTopIndo(data, rank) {
-    const html = `<div class="relative w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
-        <div class="absolute right-0 bg-yellow-500 w-8 h-8 rounded-full text-white">
-            <p class="pos-cent font-bold text-xl">${rank}</p>
-        </div>
-        <div onclick="specificMovie('${data.id}')" class="text-left w-32 component mx-auto my-4">
-            <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2${data.poster_path}" alt="">
-            <p class="text-base bg-yellow-500 text-white text-center">Top Rated</p>
-            <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
-            <p class="w-32">${data.vote_average === 0 ? 'Unrated' : data.vote_average * 10 + "%"}</p>
-            <p class="text-xs text-gray-400 w-32">${data.release_date !== "" ? data.release_date : "Unknown Release Date" }</p>
-        </div>
-    </div>
-    `
-    return html;
-} 
-
-async function getTopOnIndo(reg) {
+const getTopRated = async reg => {
     try {
         let data = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=2eb8dae5e1988df3f72f80c01551e09a&language=en-US&page=1&region=${reg}`);
         data = await data.json();
-        const result = data.results.filter((el, i) => i < 5);
-        if (result.length > 0) {
-            result.forEach((el, i) => document.getElementsByClassName('top__rated')[0].insertAdjacentHTML('beforeend', renderTopIndo(el, i+1)))
+        let {results} = data;
+        if (results.length > 0) {
+            results = results.filter(el => el.poster_path !== null).slice(0,5);
+            results.forEach((el, i) => document.getElementsByClassName('top_rated')[0].insertAdjacentHTML('beforeend', renderTopRated(el, i+1)))
             return
         }
-        let html = `<h1>No Country is Found</h1>`
-        document.getElementsByClassName('top__rated')[0].insertAdjacentHTML('afterbegin', html);
+        const html = `<h1 class="text-white font-bold">Oops, Country is not found</h1>`;
+        document.getElementsByClassName('top_rated')[0].insertAdjacentHTML('afterbegin', html);
+        return
+        // console.log(results)
     } catch (error) {
         console.log(error)
     }
 }
 
-getTopOnIndo('ID')
+const getPopular = async reg => {
+    try {
+        let data = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=2eb8dae5e1988df3f72f80c01551e09a&language=en-US&page=1&region=${reg}`);
+        data = await data.json();
+        let {results} = data;
+        console.log(results.length)
+        if (results.length > 0) {
+            results = results.filter(el => el.poster_path !== null).slice(0,5);
+            results.forEach((el, i) => document.getElementsByClassName('popular')[0].insertAdjacentHTML('beforeend', renderPopular(el, i+1)))
+            return
+        }
+        const html = `<h1 class="text-white font-bold">Oops, Country is not found</h1>`;
+        document.getElementsByClassName('popular')[0].insertAdjacentHTML('afterbegin', html);
+        return
+        // console.log(results)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-function closeModal() {
-    document.getElementsByClassName('modal__film')[0].classList.add('hidden');
-    document.getElementsByClassName('modal__film')[0].innerHTML = '';
+async function reqApiSearch(query) {
+    try {
+        let data = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=2eb8dae5e1988df3f72f80c01551e09a&language=en-US&query=${query}&page=1&include_adult=false`);
+        data = await data.json();
+        let result = data.results.filter(el => el.poster_path !== null);
+        console.log(result)
+        if (result.length === 0) {
+            let html = `<h1 class="text-center text-4xl font-bold text-white">Sorry we cannot find your movie, try another keyword</h1>`
+            document.getElementsByClassName('search_result')[0].insertAdjacentHTML('afterbegin', html);
+            return
+        }
+        result.forEach((value, index, array) => document.getElementsByClassName('search_result')[0].insertAdjacentHTML('beforeend', renderSearch(value)))
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+async function specificMovie(id) {
+    try {
+        let data = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=2eb8dae5e1988df3f72f80c01551e09a&language=en-US`);
+        data = await data.json();
+        showModal(data)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+// Component
+const renderNowPlaying = (data) => {
+    const html = `<div class="movie_card relative w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
+    <div onclick="specificMovie('${data.id}')" class="text-left w-32 component mx-auto my-4">
+    <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${data.poster_path}" alt="">
+    <p class="text-base bg-red-600 text-white text-center">Now Playing</p>
+    <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
+    <p class="w-32">${data.vote_average > 0 ? data.vote_average * 10 + '%' : 'Unrated'}</p>
+    <p class="text-xs w-32">${data.release_date}</p>
+    </div>
+    </div>
+    `
+    return html;
+}
+
+const renderUpcoming = data => {
+    const html = `<div class="movie_card relative w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
+                <div onclick="specificMovie('${data.id}')" class="text-left w-32 component mx-auto my-4">
+                    <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${data.poster_path}" alt="">
+                    <p class="text-base bg-blue-600 text-white text-center">Upcoming</p>
+                    <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
+                    <p class="w-32">${data.vote_average > 0 ? data.vote_average * 10 + '%' : 'Unrated'}</p>
+                    <p class="text-xs text-gray-400 w-32">${data.release_date}</p>
+                </div>
+            </div>
+    `
+    return html;
+}
+
+const renderTopRated = (data,rank) => {
+    const html = `<div class="movie_card relative w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
+                <div class="absolute right-0 bg-yellow-500 w-8 h-8 rounded-full text-white">
+                    <p class="pos-cent font-bold text-xl">${rank}</p>
+                </div>
+                <div onclick="specificMovie('${data.id}')" class="text-left w-32 component mx-auto my-4">
+                    <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${data.poster_path}" alt="">
+                    <p class="text-base bg-yellow-500 text-white text-center">Top Rated</p>
+                    <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
+                    <p class="w-32">${data.vote_average > 0 ? data.vote_average * 10 + '%' : 'Unknown'}</p>
+                    <p class="text-xs text-gray-400 w-32">${data.release_date}</p>
+                </div>
+            </div>
+    `
+    return html
+}
+
+const renderPopular = (data, rank) => {
+    const html = `<div class="movie_card relative w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
+                <div class="absolute right-0 bg-indigo-500 w-8 h-8 rounded-full text-white">
+                    <p class="pos-cent font-bold text-xl">${rank}</p>
+                </div>
+                <div onclick="specificMovie('${data.id}')" class="text-left w-32 component mx-auto my-4">
+                    <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${data.poster_path}" alt="">
+                    <p class="text-base bg-indigo-500 text-white text-center">Popular</p>
+                    <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
+                    <p class="w-32">${data.vote_average > 0 ? data.vote_average * 10 + '%' : 'Unknown'}</p>
+                    <p class="text-xs text-gray-400 w-32">${data.release_date}</p>
+                </div>
+            </div>
+    `
+    return html;
+}
+
+const renderSearch = data => {
+    const html = `<div class="movie_card w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
+        <div onclick="specificMovie('${data.id}')" class="component m-4">
+            <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2${data.poster_path}" alt="">
+            <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
+            <p class="w-32">${data.vote_average === 0 ? 'Unrated' : data.vote_average * 10 + "%"}</p>
+            <p class="text-xs text-gray-400 w-32">${data.release_date !== "" ? data.release_date : "Unknown release date"}</p>
+        </div>
+    </div>
+    `
+    return html;
 }
 
 function showModal(data) {
@@ -76,7 +174,7 @@ function showModal(data) {
     const html = `<div class="myModal">
             <div class="modal-content rounded-3xl">
                 <div onclick="closeModal();" class="relative close__button mb-4 w-8 h-8 bg-red-300 rounded-full float-right hover:shadow-2xl hover:bg-red-900">
-                    <a href="#" class="pos-cent text-white font-bold">X</a>
+                    <a role="button" class="pos-cent text-white font-bold">X</a>
                 </div>
                 <div class="info flex my-4 flex-wrap justify-center gap-x-16">
                     <img class="w-96"src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${data.poster_path}" alt="">
@@ -105,136 +203,54 @@ function showModal(data) {
             </div>
         </div>
     `
-    document.getElementsByClassName('modal__film')[0].insertAdjacentHTML('afterbegin', html);
-    document.getElementsByClassName('modal__film')[0].classList.remove('hidden');
+    document.getElementsByClassName('modal')[0].insertAdjacentHTML('afterbegin', html);
+    document.getElementsByClassName('modal')[0].classList.remove('hidden');
 
 }
 
-function renderNowPlaying(data) {
-    const html = `<div class="w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
-        <div onclick="specificMovie('${data.id}')" class="w-32 component mx-auto my-4">
-            <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2${data.poster_path}" alt="">
-            <p class="text-base bg-red-600 text-white text-center">Now Playing</p>
-            <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
-            <p class="w-32">${data.vote_average === 0 ? 'Unrated' : data.vote_average * 10 + "%"}</p>
-            <p class="text-xs text-gray-400 w-32">${data.release_date !== "" ? data.release_date : "Unknown Release Date" }</p>
-        </div>
-    </div>
-    `
-    return html;
-} 
-
-function renderUpcoming(data) {
-    const html = `<div class="w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
-        <div onclick="specificMovie('${data.id}')" class="component m-4">
-                <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2${data.poster_path}" alt="">
-                <p class="text-base bg-blue-600 text-white text-center">Upcoming</p>
-                <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
-                <p class="w-32">${data.vote_average === 0 ? 'Unrated' : data.vote_average * 10 + "%"}</p>
-                <p class="text-xs text-gray-400 w-32">${data.release_date !== "" ? data.release_date : "Unknown Release Date"}</p>
-            </div>
-    </div>
-    `
-    // console.log(data.toString())
-    return html;
-}
-
-async function upComing() {
-    document.getElementById('search__result').innerHTML = '';
-    let data = await fetch('https://api.themoviedb.org/3/movie/upcoming?api_key=2eb8dae5e1988df3f72f80c01551e09a&language=en-US&page=1&region=ID');
-    data = await data.json();
-    let result = data.results.filter(el => el.poster_path !== null);
-    result.forEach(el => document.getElementsByClassName('upcoming')[0].insertAdjacentHTML('beforeend', renderUpcoming(el)));
-}
-
-upComing();
-
-async function nowPlaying() {
-    document.getElementById('search__result').innerHTML = '';
-     let data = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=2eb8dae5e1988df3f72f80c01551e09a&language=en-US&page=1&region=ID');
-     data = await data.json();
-     let result = data.results.filter(el => el.poster_path !== null);
-     result.forEach(el => document.getElementById('main').insertAdjacentHTML("beforeend", renderNowPlaying(el)))
- }
-
- nowPlaying();
-
-const renderInfo = (data) => {
-    const html = `<div class="w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
-        <div onclick="specificMovie('${data.id}')" class="component m-4">
-            <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2${data.poster_path}" alt="">
-            <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
-            <p class="w-32">${data.vote_average === 0 ? 'Unrated' : data.vote_average * 10 + "%"}</p>
-            <p class="text-xs text-gray-400 w-32">${data.release_date !== "" ? data.release_date : "Unknown release date"}</p>
-        </div>
-    </div>
-    `
-    return html;
-}
-
-async function reqApiSearch(query) {
-    try {
-        let data = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=2eb8dae5e1988df3f72f80c01551e09a&language=en-US&query=${query}&page=1&include_adult=false`);
-        data = await data.json();
-        let result = data.results.filter(el => el.poster_path !== null);
-        console.log(result)
-        if (result.length === 0) {
-            let html = `<h1>Sorry we cannot find your movie, try another keyword</h1>`
-            document.getElementsByClassName('search__result')[0].insertAdjacentHTML('afterbegin', html);
-            return
+// Click Event
+const hideSection = (...hidden) => {
+    console.log(hidden)
+    hidden.forEach((el, i) => {
+        if (i < 3) {
+            document.getElementById(el).classList.add('hidden')
+        } else {
+            document.getElementById(el).classList.remove('hidden')
         }
-        result.forEach(el => document.getElementsByClassName('search__result')[0].insertAdjacentHTML('afterbegin', renderInfo(el)));
-    } catch (err) {
-        console.log(err)
-    }
+    });
 }
 
-async function specificMovie(id) {
-    let data = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=2eb8dae5e1988df3f72f80c01551e09a&language=en-US`);
-    data = await data.json();
-    showModal(data)
-}
-
-
-function searchMovies(query) {
-    const queryRegex = /\s+/gm;
-    const transQuery = query.replaceAll(queryRegex, '%');
-    reqApiSearch(transQuery);
-}
-
-document.getElementById('search_button').addEventListener('click', function() {
-    const data =  document.getElementById('search_box').value;
-    alert(data);
-    document.getElementsByClassName('main')[0].innerHTML = '';
-    document.getElementsByClassName('main2')[0].innerHTML = '';
-    document.getElementsByClassName('main4')[0].innerHTML = '';
-    document.getElementsByClassName('search__result')[0].innerHTML = '';  
-    searchMovies(data)
-    document.getElementById('search_box').value = '';
+document.getElementById('search_box').addEventListener('click', () => {
+    let data = document.getElementById('search_input').value;
+    document.getElementsByClassName('search_result')[0].innerHTML = '';
+    hideSection('top_rated', 'popular');
+    hideSection('now_playing', 'upcoming');
+    document.getElementById('search_result').classList.remove('hidden');
+    reqApiSearch(data)
 });
 
-document.getElementById('search__top').addEventListener('click', function() {
-    const data = document.getElementById("top__box").value;
-    document.getElementById('top__rated').innerHTML = ''; 
-    if (data.length > 2) {
-        alert('Gunakan 2 Digit');
-        document.getElementById("top__box").value = '';
-        getTopOnIndo(data)
-        return
-    }
-    getTopOnIndo(data);
-    window.location.href = '#main4'
-})
-
-document.getElementById('search__pop').addEventListener('click', function() {
-    const data = document.getElementById("pop__box").value;
-    document.getElementById('popular').innerHTML = ''; 
-    if (data.length > 2) {
-        alert('Gunakan 2 Digit');
-        document.getElementById("pop__box").value = '';
-        getPopular('ID');
-        return
-    }
+document.getElementById('pop_search').addEventListener('click', () => {
+    let data = document.getElementById('pop_result').value;
+    document.getElementsByClassName('popular')[0].innerHTML = '';
     getPopular(data);
-    window.location.href = '#main4'
-})
+});
+
+document.getElementById('top_search').addEventListener('click', () => {
+    let data = document.getElementById('top_result').value;
+    document.getElementsByClassName('top_rated')[0].innerHTML = '';
+    getTopRated(data);
+});
+
+
+// Other Function
+function closeModal() {
+    document.getElementsByClassName('modal')[0].classList.add('hidden');
+    document.getElementsByClassName('modal')[0].innerHTML = '';
+}
+
+
+// Invoking
+getNowPlaying();
+getUpcoming();
+getTopRated('ID');
+getPopular('ID');

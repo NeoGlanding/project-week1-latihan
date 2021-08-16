@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap');
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: rgb(31, 34, 38)
+}
+
+.font-reenie {
+    font-family: 'Reenie Beanie', cursive;
+}
+
+nav span {
+    font-family: 'Reenie Beanie', cursive;
+}
+
+.nav_link a:hover {
+    color: gold
+}
+
+.nav__ {
+    background-color: rgb(27, 24, 18)
+}
+
+.hidden {
+    display: none;
+}
+
+.movie_card {
+    background-color: rgba(65, 69, 72, 0.6);
+    border-radius: 0.5rem;
+}
+
+.movie_card:hover {
+    animation: myAnim 3s infinite;
+}
+
+.vh-96 {
+    height: 80vh;
+}
+
+.width-96 {
+    width: 80%;
+}
+
+.outline {
+    margin: 3rem 0;
+    color: white;
+}
+
+.myModal {
+    /* display: none; */
+    background-color: black;
+    background-color: rgb(0, 0, 0, 0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid black;
+    width: 55%;
+}
+
+.pos-cent {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+}
+
+.pos-cent-e {
+    position: absolute;
+    right: 50%;
+    transform: translate(50%);
+}
+
+.footer_ {
+    background-color: rgb(27, 24, 18);
+}
+
+@keyframes myAnim {
+    30% {
+        margin: 0 0 1rem 0;
+    }
+}
