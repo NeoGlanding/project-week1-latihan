@@ -11,7 +11,7 @@
 </head>
 <body>
     <section id="navigation_bar">
-        <nav class="relative navigation_bar h-16 w-full nav__">
+        <nav class="sticky relative navigation_bar h-16 w-full nav__">
             <span class="fantastics absolute text-4xl text-white font-bold top-3 left-8">Fantastic <span class="text-yellow-500"> Film</span></span>
             <div class="nav_link absolute w-96 right-8 top-4 text-base text-white font-bold flex justify-around">
                 <a role="button" href="#now_playing" class="" onclick="hideSection('top_rated', 'popular', 'search_result', 'now_playing', 'upcoming');">Now Playing</a>
@@ -19,11 +19,11 @@
                 <a role="button" href="#top_rated" class="" onclick="hideSection('now_playing','upcoming', 'search_result', 'top_rated', 'popular');">Top Rated</a>
                 <a role="button" href="#popular" class="" onclick="hideSection('now_playing','upcoming', 'search_result', 'top_rated', 'popular');">Popular</a>
             </div>
-            <select class="nav_select p-2 absolute right-8 top-3 rounded-lg hidden" name="category" id="">
-                <option>Now Playing</option>
-                <option>Upcoming</option>
-                <option>Top Rated</option>
-                <option>Popular</option>
+            <select class="nav_select p-2 absolute right-8 top-3 rounded-lg hidden" name="category" id="" onchange="testFunc();">
+                <option value="'top_rated,popular,search_result,now_playing,upcoming">Now Playing</option>
+                <option value="top_rated,popular,search_result,now_playing,upcoming">Upcoming</option>
+                <option value="now_playing,upcoming,search_result,top_rated,popular">Top Rated</option>
+                <option value="now_playing,upcoming,search_result,top_rated,popular">Popular</option>
             </select>
         </nav>
     </section>
@@ -69,7 +69,7 @@
     <section id="top_rated" class="hidden">
         <div class="outline">
             <h1 class="text-center text-2xl font-bold">Top Rated</h1>
-            <div class="my-4 bg-white flex items-center rounded-full w-1/5 shadow-xl m-auto">
+            <div class="my-4 bg-white flex items-center rounded-full w-1/5 shadow-xl m-auto tex-gray-900">
                 <input id="top_result" class="focus:ring-2 focus:ring-blue-600 rounded-l-full w-full py-2 px-6 text-gray-600 leading-tight focus:outline-none" id="search" type="text" placeholder="2 Alpha Country Code">
                 <div class="p-0">
                   <button id="top_search" class="bg-yellow-500 text-white rounded-full p-0.5 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center" type="button"><i class="fa fa-search"></i>   
@@ -84,13 +84,10 @@
     <section id="popular" class="hidden">
         <div class="outline">
             <h1 class="text-center text-2xl font-bold">Popular</h1>
-            <div class="my-4 bg-white flex items-center rounded-full w-1/5 shadow-xl m-auto">
-                <input id="pop_result" class="focus:ring-2 focus:ring-blue-600 rounded-l-full w-full py-2 px-6 text-gray-600 leading-tight focus:outline-none" id="search" type="text" placeholder="2 Alpha Country Code">
-                <div class="p-0">
-                  <button id="pop_search" class="bg-indigo-500 text-white rounded-full p-0.5 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center" type="button"><i class="fa fa-search"></i>   
-                  </button>
-                  </div>
-                </div>
+            <div class="text-center text-gray-900">
+                <input type="text" id="pop_result">
+                <button id="pop_search">Search</button>
+            </div>
             <div class="popular flex justify-center flex-wrap">
                 
             </div>

@@ -28,13 +28,16 @@ nav span {
     display: none;
 }
 
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
 .movie_card {
     background-color: rgba(65, 69, 72, 0.6);
     border-radius: 0.5rem;
-}
-
-.movie_card:hover {
-    animation: myAnim 3s infinite;
 }
 
 .vh-96 {
@@ -91,5 +94,24 @@ nav span {
 @keyframes myAnim {
     30% {
         margin: 0 0 1rem 0;
+    }
+}
+
+@media (max-width: 411px) {
+    .nav_link {
+        display: none;
+    }
+
+    .nav_select {
+        display: block;
+    }
+
+    .modal-content {
+        width: 95%;
+        text-align: center;
+    }
+
+    .close_modal {
+        justify-content: center;
     }
 }

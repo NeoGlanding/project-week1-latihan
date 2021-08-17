@@ -94,7 +94,7 @@ async function specificMovie(id) {
 
 // Component
 const renderNowPlaying = (data) => {
-    const html = `<div class="movie_card relative w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
+    const html = `<div class="movie_card transform relative w-40 m-2 hover:shadow-2xl hover:scale-105">
     <div onclick="specificMovie('${data.id}')" class="text-left w-32 component mx-auto my-4">
     <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${data.poster_path}" alt="">
     <p class="text-base bg-red-600 text-white text-center">Now Playing</p>
@@ -108,7 +108,7 @@ const renderNowPlaying = (data) => {
 }
 
 const renderUpcoming = data => {
-    const html = `<div class="movie_card relative w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
+    const html = `<div class="movie_card transform relative w-40 m-2 hover:shadow-2xl hover:scale-105">
                 <div onclick="specificMovie('${data.id}')" class="text-left w-32 component mx-auto my-4">
                     <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${data.poster_path}" alt="">
                     <p class="text-base bg-blue-600 text-white text-center">Upcoming</p>
@@ -122,7 +122,7 @@ const renderUpcoming = data => {
 }
 
 const renderTopRated = (data,rank) => {
-    const html = `<div class="movie_card relative w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
+    const html = `<div class="movie_card transform hover:scale-105 relative w-40 m-2 hover:shadow-2xl">
                 <div class="absolute right-0 bg-yellow-500 w-8 h-8 rounded-full text-white">
                     <p class="pos-cent font-bold text-xl">${rank}</p>
                 </div>
@@ -139,7 +139,7 @@ const renderTopRated = (data,rank) => {
 }
 
 const renderPopular = (data, rank) => {
-    const html = `<div class="movie_card relative w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
+    const html = `<div class="movie_card transform relative w-40 m-2 hover:shadow-2xl hover:scale-105">
                 <div class="absolute right-0 bg-indigo-500 w-8 h-8 rounded-full text-white">
                     <p class="pos-cent font-bold text-xl">${rank}</p>
                 </div>
@@ -156,7 +156,7 @@ const renderPopular = (data, rank) => {
 }
 
 const renderSearch = data => {
-    const html = `<div class="movie_card w-40 m-2 hover:shadow-2xl hover:border-4 hover:border-gray-500">
+    const html = `<div class="movie_card transform w-40 m-2 hover:shadow-2xl hover:scale-105">
         <div onclick="specificMovie('${data.id}')" class="component m-4">
             <img class="w-32" src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2${data.poster_path}" alt="">
             <h1 class="text-lg font-bold w-32">${data.original_title}</h1>
@@ -197,7 +197,7 @@ function showModal(data) {
                         }) : 'Unknown'}
                     </div>
                 </div>
-                <div class="flex justify-end">
+                <div class="close_modal flex justify-end">
                     <a class="" href="https://www.themoviedb.org/movie/${data.id}"><button class= "px-8 py-2  bg-blue-800 rounded-lg text-white border-2 border-blue-500 hover:bg-blue-400 hover:shadow-2xl">More</button></a>
                 </div>
             </div>
@@ -210,8 +210,8 @@ function showModal(data) {
 
 // Click Event
 const hideSection = (...hidden) => {
-    console.log(hidden)
-    hidden.forEach((el, i) => {
+    let x = hidden.flat(1);
+    x.forEach((el, i) => {
         if (i < 3) {
             document.getElementById(el).classList.add('hidden')
         } else {
@@ -241,6 +241,13 @@ document.getElementById('top_search').addEventListener('click', () => {
     getTopRated(data);
 });
 
+function testFunc() {
+    let x = document.getElementsByClassName('nav_select')[0].value;
+    x = x.split(',');
+    console.log(x)
+    hideSection(x);
+}
+
 
 // Other Function
 function closeModal() {
@@ -254,3 +261,5 @@ getNowPlaying();
 getUpcoming();
 getTopRated('ID');
 getPopular('ID');
+
+// window.location.replace(`${window.location.protocol}//${window.location.hostname}:${wind}`);
